@@ -1,5 +1,6 @@
 import app from "./src/app";
-const port = process.env.PORT || 5501;
+import { config } from "./src/config/config";
+const port = config.port || 5501;
 const startServer = () => {
   app.listen(port, () => {
     console.log(`server is listening on port ${port}`);
