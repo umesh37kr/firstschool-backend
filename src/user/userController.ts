@@ -3,6 +3,8 @@ import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
 import userModel from "./userModel";
 import bcrypt from "bcrypt";
+import { sign } from "jsonwebtoken";
+import { config } from "../config/config";
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const result = validationResult(req);
   if (!result.isEmpty()) {
@@ -15,16 +17,18 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     return next(createHttpError(409, "username is already exist"));
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-  // token generation
-
   // res
   const newUser = await userModel.create({
     username,
     role,
     password: hashedPassword,
   });
-
-  res.json({ id: newUser._id });
+  // token generation
+  const token = sign({ sub: newUser._id }, config.jwtSecret as string, {
+    expiresIn: "7d",
+    algorithm: "HS256",
+  });
+  res.json({ accessToken: token });
 };
 
 export { createUser };
