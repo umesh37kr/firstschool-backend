@@ -15,7 +15,7 @@ export default checkSchema({
     notEmpty: true,
     errorMessage: "please enter date of birth",
   },
-  class: {
+  classes: {
     notEmpty: true,
     errorMessage: "please enter class",
   },
@@ -27,9 +27,9 @@ export default checkSchema({
     notEmpty: true,
     errorMessage: "please enter roll number",
   },
-  contactInfo: {
+  mobile: {
     notEmpty: true,
-    errorMessage: "please enter contact info",
+    errorMessage: "please enter mobile number",
   },
   address: {
     notEmpty: true,

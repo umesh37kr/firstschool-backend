@@ -4,11 +4,12 @@ export interface Student {
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
-  class: string;
+  classes: string;
   section: string;
   rollNumber: number;
   parentId: string;
-  contactInfo: string;
+  mobile: number;
+  email: string;
   address: string;
   image: string;
 }
