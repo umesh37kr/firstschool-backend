@@ -30,11 +30,38 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
       expiresIn: "7d",
       algorithm: "HS256",
     });
-    res.json({ accessToken: token });
+    res.status(201).json({ accessToken: token });
   } catch (error) {
     console.log(error);
     return next(createHttpError(500, "error while creating user"));
   }
 };
 
-export { createUser };
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return next(createHttpError(400, result.array()[0].msg as string));
+  }
+  const { username, password } = req.body;
+  const user = await userModel.findOne({ username });
+  try {
+    if (!user) {
+      return next(createHttpError(400, "username or password does not match!"));
+    }
+    const passwordMatched = await bcrypt.compare(password, user.password);
+    if (!passwordMatched) {
+      return next(createHttpError(400, "username or password does not match!"));
+    }
+    // token generation
+    const token = sign({ sub: user._id }, config.jwtSecret as string, {
+      expiresIn: "7d",
+      algorithm: "HS256",
+    });
+
+    res.status(200).json({ user: user._id, token: token });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { createUser, loginUser };
