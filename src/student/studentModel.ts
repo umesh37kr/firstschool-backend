@@ -3,7 +3,9 @@ import { Student } from "./studentType";
 
 const studentSchema = new mongoose.Schema<Student>(
   {
-    userId: mongoose.Types.ObjectId,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
     firstName: {
       type: String,
       required: true,

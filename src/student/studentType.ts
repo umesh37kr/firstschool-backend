@@ -1,6 +1,8 @@
+import { User } from "../user/userType";
+
 export interface Student {
   _id: string;
-  userId: string;
+  userId: User;
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
