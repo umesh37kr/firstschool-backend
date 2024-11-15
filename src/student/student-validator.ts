@@ -15,6 +15,10 @@ export default checkSchema({
     notEmpty: true,
     errorMessage: "please enter date of birth",
   },
+  gender: {
+    notEmpty: true,
+    errorMessage: "Please select gender",
+  },
   classes: {
     notEmpty: true,
     errorMessage: "please enter class",

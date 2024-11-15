@@ -4,6 +4,7 @@ export interface Student {
   firstName: string;
   lastName: string;
   dateOfBirth: Date;
+  gender: string;
   classes: string;
   section: string;
   rollNumber: number;

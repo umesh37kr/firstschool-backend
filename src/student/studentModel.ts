@@ -16,6 +16,10 @@ const studentSchema = new mongoose.Schema<Student>(
       type: Date,
       required: true,
     },
+    gender: {
+      type: String,
+      required: true,
+    },
     classes: {
       type: String,
       required: true,
