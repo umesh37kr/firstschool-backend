@@ -12,7 +12,6 @@ export interface Student {
   rollNumber: number;
   parentId: string;
   mobile: number;
-  email: string;
   address: string;
   image: string;
 }

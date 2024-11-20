@@ -6,6 +6,11 @@ const studentSchema = new mongoose.Schema<Student>(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
     },
+    rollNumber: {
+      type: Number,
+      unique: true,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -30,18 +35,10 @@ const studentSchema = new mongoose.Schema<Student>(
       type: String,
       required: true,
     },
-    rollNumber: {
-      type: Number,
-      unique: true,
-      required: true,
-    },
     parentId: mongoose.Types.ObjectId,
     mobile: {
       type: Number,
       require: true,
-    },
-    email: {
-      type: String,
     },
     address: {
       type: String,
