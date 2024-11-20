@@ -43,3 +43,20 @@ export const registerStudent = async (
     next(createHttpError(400, "something went wrong"));
   }
 };
+
+export const studentList = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const students = await studentModel.find();
+    if (students.length === 0) {
+      res.status(200).json({ message: "No records found" });
+    }
+    res.status(200).json({ students: students });
+  } catch (error) {
+    console.log(error);
+    next(createHttpError(500, "something went wrong"));
+  }
+};
