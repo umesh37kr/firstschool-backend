@@ -1,7 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+// import { NextFunction, Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
 import studentModel from "./studentModel";
+import mongoose from "mongoose";
 
 export const registerStudent = async (
   req: Request,
@@ -63,5 +65,30 @@ export const studentList = async (
   } catch (error) {
     console.log(error);
     return next(createHttpError(500, "something went wrong"));
+  }
+};
+
+export const singleStudent = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const studentId = req.params.id;
+    // Check if the ID is a valid MongoDB ObjectId
+    if (
+      !mongoose.Types.ObjectId.isValid(studentId) ||
+      studentId.length !== 24
+    ) {
+      return res.status(400).json({ message: "Invalid student ID" });
+    }
+    const student = await studentModel.findById(studentId);
+    if (student === null) {
+      return res.status(404).json({ message: "student not found" });
+    }
+    return res.status(200).json({ student: student });
+  } catch (error) {
+    console.log(error);
+    next(createHttpError(500, "something went wrong"));
   }
 };
