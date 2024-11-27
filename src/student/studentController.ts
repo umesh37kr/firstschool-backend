@@ -83,8 +83,8 @@ export const singleStudent = async (
       return res.status(400).json({ message: "Invalid student ID" });
     }
     const student = await studentModel.findById(studentId);
-    if (student === null) {
-      return res.status(404).json({ message: "student not found" });
+    if (!student) {
+      return next(createHttpError(404, "student not found"));
     }
     return res.status(200).json({ student: student });
   } catch (error) {
