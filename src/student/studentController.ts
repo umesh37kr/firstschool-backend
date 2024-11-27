@@ -1,9 +1,9 @@
-// import { NextFunction, Request, Response } from "express";
 import express, { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
 import studentModel from "./studentModel";
 import mongoose from "mongoose";
+import moment from "moment";
 
 export const registerStudent = async (
   req: Request,
@@ -28,6 +28,10 @@ export const registerStudent = async (
   } = req.body;
 
   try {
+    const parsedDOB = moment(dateOfBirth, "DD/MM/YYYY", true);
+    if (!parsedDOB.isValid()) {
+      return res.status(400).json({ error: "Invalid date format" });
+    }
     const rollNumberExist = await studentModel.findOne({ rollNumber });
     if (rollNumberExist) {
       const error = createHttpError(409, "Roll number already exist");
@@ -37,7 +41,7 @@ export const registerStudent = async (
       rollNumber,
       firstName,
       lastName,
-      dateOfBirth,
+      dateOfBirth: parsedDOB,
       gender,
       classes,
       section,

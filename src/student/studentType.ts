@@ -13,5 +13,5 @@ export interface Student {
   parentId: string;
   mobile: number;
   address: string;
-  image: string;
+  avatar: string;
 }
