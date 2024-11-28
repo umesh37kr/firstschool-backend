@@ -27,6 +27,10 @@ const studentSchema = new mongoose.Schema<Student>(
       type: String,
       required: true,
     },
+    avatar: {
+      type: String,
+      required: true,
+    },
     classes: {
       type: String,
       required: true,
