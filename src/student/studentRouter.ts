@@ -7,6 +7,7 @@ import {
   studentList,
 } from "./studentController";
 import studentValidator from "./student-validator";
+import authenticate from "../middlewares/authenticate";
 const studentRouter = express.Router();
 
 const upload = multer({
@@ -14,6 +15,7 @@ const upload = multer({
 });
 studentRouter.post(
   "/register",
+  authenticate,
   upload.single("avatar"),
   studentValidator,
   registerStudent
