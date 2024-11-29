@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import moment from "moment";
 import cloudinary from "../config/cloudinary";
 import path from "node:path";
+import fs from "node:fs";
 
 export const registerStudent = async (
   req: Request,
@@ -64,7 +65,9 @@ export const registerStudent = async (
       address,
       avatar: uploadResult.secure_url,
     });
-    res.status(201).json({ id: student });
+    // delete temp files
+    await fs.promises.unlink(filePath);
+    res.status(201).json({ id: student._id });
   } catch (error) {
     console.log(error);
     return next(createHttpError(400, "something went wrong"));
