@@ -3,8 +3,7 @@ import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
 import userModel from "./userModel";
 import bcrypt from "bcrypt";
-import { sign } from "jsonwebtoken";
-import { config } from "../config/config";
+import { generateToken } from "./tokenService";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const result = validationResult(req);
@@ -26,10 +25,11 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
       password: hashedPassword,
     });
     // token generation
-    const token = sign({ sub: newUser._id }, config.jwtSecret as string, {
-      expiresIn: "7d",
-      algorithm: "HS256",
-    });
+    const payload = {
+      sub: newUser._id,
+      role: newUser.role,
+    };
+    const token = generateToken(payload);
     res.status(201).json({ accessToken: token });
   } catch (error) {
     console.log(error);
@@ -53,10 +53,11 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
       return next(createHttpError(400, "username or password does not match!"));
     }
     // token generation
-    const token = sign({ sub: user._id }, config.jwtSecret as string, {
-      expiresIn: "7d",
-      algorithm: "HS256",
-    });
+    const payload = {
+      sub: user._id,
+      role: user.role,
+    };
+    const token = generateToken(payload);
 
     res.status(200).json({ user: user._id, token: token });
   } catch (error) {
