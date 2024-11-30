@@ -115,3 +115,19 @@ export const singleStudent = async (
     next(createHttpError(500, "something went wrong"));
   }
 };
+
+export const deleteStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const studentId = req.params.id;
+    const deleted = studentModel.findOneAndDelete({ _id: studentId });
+    console.log("deleted::", deleted);
+    res.status(200).json({ message: "deleted successfully.." });
+  } catch (error) {
+    console.log(error);
+    next(createHttpError(403, "something went wrong"));
+  }
+};

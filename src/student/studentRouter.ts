@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from "node:path";
 import {
+  deleteStudent,
   registerStudent,
   singleStudent,
   studentList,
@@ -22,5 +23,6 @@ studentRouter.post(
 );
 studentRouter.get("/", studentList);
 studentRouter.get("/:id", singleStudent);
+studentRouter.delete("/:id", authenticate, deleteStudent);
 
 export default studentRouter;
