@@ -123,8 +123,17 @@ export const deleteStudent = async (
 ) => {
   try {
     const studentId = req.params.id;
-    const deleted = studentModel.findOneAndDelete({ _id: studentId });
-    console.log("deleted::", deleted);
+    const student = await studentModel.findOne({ _id: studentId });
+    if (!student) {
+      return next(createHttpError(404, "student not found"));
+    }
+    // delete cloudinary image
+    const imageSplitted = student.avatar.split("/");
+    const imageId =
+      imageSplitted.at(-2) + "/" + imageSplitted.at(-1)?.split(".").at(-2);
+    await cloudinary.uploader.destroy(imageId);
+    // delete data from db
+    await studentModel.deleteOne({ _id: studentId });
     res.status(200).json({ message: "deleted successfully.." });
   } catch (error) {
     console.log(error);
