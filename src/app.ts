@@ -5,6 +5,7 @@ import UserRouter from "./user/userRouter";
 import studentRouter from "./student/studentRouter";
 import teacherRouter from "./teacher/teacherRouter";
 import { config } from "./config/config";
+import contactRouter from "./contactUs/contactRouter";
 const app = express();
 
 const corsOptions = {
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 app.use("/api/user", UserRouter);
 app.use("/api/student", studentRouter);
 app.use("/api/teacher", teacherRouter);
+app.use("/api/contact", contactRouter);
 
 // global error handlers
 app.use(globalErrorHandlers);
