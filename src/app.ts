@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import globalErrorHandlers from "./middlewares/globalErrorHandles";
 import UserRouter from "./user/userRouter";
 import studentRouter from "./student/studentRouter";
@@ -8,8 +8,16 @@ import { config } from "./config/config";
 import contactRouter from "./contactUs/contactRouter";
 const app = express();
 
-const corsOptions = {
-  origin: config.frontendDomain,
+const allowedOrigins = [config.frontendUserDomain, config.frontendDomain];
+
+const corsOptions: CorsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
 };
 app.use(cors(corsOptions));
 
