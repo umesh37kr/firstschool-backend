@@ -25,3 +25,17 @@ export const create = async (
     next(error);
   }
 };
+
+export const noticeList = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const noticeList = await noticeBoardModel.find();
+    return res.status(200).json({ data: noticeList });
+  } catch (error) {
+    next(error);
+    return createHttpError(500, "something went worong..");
+  }
+};
