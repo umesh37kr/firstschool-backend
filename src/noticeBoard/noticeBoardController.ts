@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import noticeBoardModel from "./noticeBoardModel";
 import createHttpError from "http-errors";
+import moment from "moment";
 
 export const create = async (
   req: Request,
@@ -32,7 +33,14 @@ export const noticeList = async (
   next: NextFunction
 ) => {
   try {
-    const noticeList = await noticeBoardModel.find();
+    const noticeData = await noticeBoardModel.find();
+    const noticeList = noticeData.map((notice) => {
+      return {
+        _id: notice._id,
+        notice: notice.notice,
+        createdAt: moment(notice.createdAt).format("DD/MM/YYYY"), // Format the date
+      };
+    });
     return res.status(200).json({ data: noticeList });
   } catch (error) {
     next(error);
