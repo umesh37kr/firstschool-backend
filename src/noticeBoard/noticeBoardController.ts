@@ -66,3 +66,23 @@ export const deleteNotice = async (
     return createHttpError(500, "something went wrong..");
   }
 };
+
+export const updateNotice = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.params.id;
+    const { notice } = req.body;
+    const data = await noticeBoardModel.findOne({ _id: id });
+    if (!data) {
+      return res.status(404).json({ message: "Notice not found." });
+    }
+    await noticeBoardModel.findOneAndUpdate({ _id: id }, { notice });
+    return res.status(200).json({ message: "updated successfully." });
+  } catch (error) {
+    next(error);
+    return createHttpError(500, "something went wrong..");
+  }
+};
