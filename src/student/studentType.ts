@@ -14,4 +14,5 @@ export interface Student {
   mobile: number;
   address: string;
   avatar: string;
+  createdAt: Date;
 }

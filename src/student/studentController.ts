@@ -7,6 +7,7 @@ import moment from "moment";
 import cloudinary from "../config/cloudinary";
 import path from "node:path";
 import fs from "node:fs";
+import { Student } from "./studentType";
 
 export const registerStudent = async (
   req: Request,
@@ -84,7 +85,23 @@ export const studentList = async (
     if (students.length === 0) {
       res.status(200).json({ message: "No records found" });
     }
-    res.status(200).json({ students: students });
+
+    const studentsList = students.map((student: Student) => {
+      return {
+        _id: student._id,
+        rollNumber: student.rollNumber,
+        avatar: student.avatar,
+        firstName: student.firstName,
+        lastName: student.lastName,
+        classes: student.classes,
+        section: student.section,
+        gender: student.gender,
+        dateOfBirth: moment(student.dateOfBirth).format("DD/MM/YYYY"),
+        createdAt: moment(student.createdAt).format("DD/MM/YYYY"), // Format the date
+        address: student.address,
+      };
+    });
+    res.status(200).json({ students: studentsList });
   } catch (error) {
     console.log(error);
     return next(createHttpError(500, "something went wrong"));
